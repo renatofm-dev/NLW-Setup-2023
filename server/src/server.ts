@@ -2,8 +2,7 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import { appRoutes } from "./routes";
-
-
+import localtunnel from 'localtunnel';
 const app = Fastify();
 
 
@@ -12,8 +11,17 @@ app.register(appRoutes)
 
 
 
-app.listen({
-  port: 3333,
-}).then(() => {
-  console.log('HTTP Server running!')
+app
+.listen({
+	host: '192.168.1.4',
+	port: 3333,
 })
+.then(async () => {
+	const tunnel = await localtunnel({
+		local_host: '192.168.1.4',
+		port: 3333,
+		subdomain: 'rfmapihabits',
+	});
+
+	console.log('HTTP Server Running!');
+});
